@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      /*border: 1px solid #ccc;*/
+      border-radius: 10px;
+      /*background-color: #f9f9f9;*/
+      /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group-label {
+      font: inherit;
+      color: #000;
+      position: absolute;
+      top: 15px;
+      left: 10px;
+      transform-origin: 0 0;
+      transition: transform 0.5s, background-color 0.5s, padding 0.5s;
+      pointer-events: none;
+    }
+
+    .input-group-input {
+      font: inherit;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      outline: 2px solid #000;
+      background-color: transparent;
+      transition: outline-color 0.5s;
+    }
+
+    .input-group-input:focus {
+      outline-color: #3c50eb;
+    }
+
+    .input-group-input:focus + .input-group-label,
+    .input-group-input:valid + .input-group-label {
+      padding: 5px;
+      transform: translate(10px, -35px) scale(1);
+      background-color: white;
+    }
+
+    .bn31,
+    .bn632-hover {
+      background: linear-gradient(to right, darkblue, #3cba92, #30dd8a, #2bb673);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 15px 30px;
+      cursor: pointer;
+      transition: background 0.4s, transform 0.4s;
+    }
+
+    .bn31:hover,
+    .bn632-hover:hover {
+      background: #2bb673;
+      transform: scale(1.05);
+    }
+
+    form button {
+      margin-top: 15px;
+    }
+
+    h4 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.emailError != null}">
+    <strong>Email is busy!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.passwordError != null}">
+    <strong>Passwords are not same!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success != null}">
+    <strong>You have created a new account</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <form action="/auth" method="post">
+    <h4>Sign-in</h4>
+    <div class="input-group">
+      <input type="text" id="email" name="email" class="input-group-input" required />
+      <label for="email" class="input-group-label">Email</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" name="password" class="input-group-input" required />
+      <label for="password" class="input-group-label">Password</label>
+      <input type="checkbox" id="chk"><label for="chk" style="margin-left: 10px">Show password</label>
+    </div>
+    <br>
+    <button type="submit" class="bn31"><span class="bn31span">Sign-in</span></button>
+    <button type="button" class="bn632-hover bn22" data-bs-toggle="modal" data-bs-target="#singUpModal">
+      Sign-up
+    </button>
+  </form>
+  <form action="/sing-up" method="post">
+    <div class="modal fade" id="singUpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">New account  </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <input type="email" id="emailSignUp" name="email" class="input-group-input" required />
+              <label for="emailSignUp" class="input-group-label">Email</label>
+            </div>
+            <div class="input-group">
+              <input type="password" id="passwordSignUp" name="password" class="input-group-input" required />
+              <label for="passwordSignUp" class="input-group-label">Password</label>
+              <input type="checkbox" id="chkSignUp"><label for="chkSignUp" style="margin-left: 10px">Show password</label>
+            </div>
+            <div class="input-group">
+              <input type="password" id="rePasswordSignUp" name="rePassword" class="input-group-input" required />
+              <label for="rePasswordSignUp" class="input-group-label">Repeat password</label><br>
+              <input type="checkbox" id="chkRepeat"><label for="chkRepeat" style="margin-left: 10px">Show password</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="fullname" name="fullname" class="input-group-input" required />
+              <label for="fullname" class="input-group-label">Full Name</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Create new account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+  const password = document.getElementById("password");
+  const chk = document.getElementById("chk");
+  chk.onchange = function (e){
+    password.type = chk.checked ? "text" : "password";
+  };
+  const passwordSignUp = document.getElementById("passwordSignUp");
+  const chkSignUp = document.getElementById("chkSignUp");
+
+  chkSignUp.addEventListener("change", function () {
+    passwordSignUp.type = chkSignUp.checked ? "text" : "password";
+  });
+  const rePasswordSignUp = document.getElementById("rePasswordSignUp");
+  const chkRepeat = document.getElementById("chkRepeat");
+
+  chkRepeat.addEventListener("change", function () {
+    rePasswordSignUp.type = chkRepeat.checked ? "text" : "password";
+  });
+</script>
+</body>
+</html>
+

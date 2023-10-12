@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-start; /* Выравнивание элементов влево */
+            align-items: center; /* Выравнивание элементов по вертикали по центру */
+            height: 60px; /* Высота меню */
+        }
+
+        ul li a {
+            color: rgb(128, 128, 128);
+            font-size: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            margin: 0 10px;
+            position: relative;
+            transition: all .5s;
+        }
+
+        ul li a:hover {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        ul li a::before,
+        ul li a::after {
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            border: 3px solid dodgerblue;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        ul li a::before {
+            bottom: 12px;
+            left: 12px;
+            border-width: 3px 3px;
+        }
+
+        ul li a::after {
+            top: 12px;
+            right: 12px;
+            border-width: 3px 3px 0 0;
+        }
+
+        ul li a:hover::before {
+            opacity: 1;
+            bottom: -8px;
+            left: -8px;
+        }
+
+        ul li a:hover::after {
+            opacity: 1;
+            top: -8px;
+            right: -8px;
+        }
+        .centered-heading {
+            text-align: center;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .product-image {
+            flex: 1;
+        }
+
+        .product-details {
+            flex: 2;
+            padding: 10px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/profile">Profile</a></li>
+    <li><a href="#">services</a></li>
+    <li><a href="#">team</a></li>
+    <li><a href="#">contact</a></li>
+</ul>
+<div>
+</div>
+<div>
+    <h1 class="centered-heading">
+        <span th:text="${item.product}"></span>
+    </h1>
+    <div class="product-info">
+        <div class="product-image">
+            <img class="card-img-top" src="https://object.pscloud.io/cms/cms/Photo/img_0_77_3411_0_1.webp" alt="${item.product}">
+        </div>
+        <div class="product-details">
+            <div class="product-card">
+                <h5 th:text="${item.description}"></h5>
+                <h2 th:text="${item.price}">₸</h2>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+</body>
+</html>

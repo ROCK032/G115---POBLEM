@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      display: flex;
+      justify-content: flex-start; /* Выравнивание элементов влево */
+      align-items: center; /* Выравнивание элементов по вертикали по центру */
+      height: 60px; /* Высота меню */
+    }
+
+    ul li a {
+      color: rgb(128, 128, 128);
+      font-size: 20px;
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      margin: 0 10px;
+      position: relative;
+      transition: all .5s;
+    }
+
+    ul li a:hover {
+      background-color: dodgerblue;
+      color: white;
+    }
+
+    ul li a::before,
+    ul li a::after {
+      content: "";
+      position: absolute;
+      height: 12px;
+      width: 12px;
+      border: 3px solid dodgerblue;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    ul li a::before {
+      bottom: 12px;
+      left: 12px;
+      border-width: 3px 3px;
+    }
+
+    ul li a::after {
+      top: 12px;
+      right: 12px;
+      border-width: 3px 3px 0 0;
+    }
+
+    ul li a:hover::before {
+      opacity: 1;
+      bottom: -8px;
+      left: -8px;
+    }
+
+    ul li a:hover::after {
+      opacity: 1;
+      top: -8px;
+      right: -8px;
+    }
+
+    h1 {
+      color: transparent;
+      -webkit-text-stroke: 1px red;
+      font-size: 10rem;
+      display: grid;
+      place-items: center;
+      margin-top: 1rem;
+    }
+
+    #itemsField {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .card {
+      width: 18rem;
+      margin: 10px; /* Добавьте отступ между карточками, если нужно */
+    }
+
+    .bn31 {
+      background-image: linear-gradient(to right, #006175 0%, #00a950 100%);
+      border-radius: 40px;
+      box-sizing: border-box;
+      color: #00a84f;
+      display: block;
+      height: 50px;
+      font-size: 1.4em;
+      padding: 4px;
+      position: relative;
+      text-decoration: none;
+      width: 7em;
+      z-index: 2;
+    }
+
+    .bn31:hover {
+      color: #fff;
+    }
+
+    .bn31 .bn31span {
+      align-items: center;
+      background: white;
+      border-radius: 40px;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      transition: background 0.5s ease;
+      width: 100%;
+    }
+
+    .bn31:hover .bn31span {
+      background: transparent;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      /*border: 1px solid #ccc;*/
+      border-radius: 10px;
+      /*background-color: #f9f9f9;*/
+      /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group-label {
+      font: inherit;
+      color: #000;
+      position: absolute;
+      top: 15px;
+      left: 10px;
+      transform-origin: 0 0;
+      transition: transform 0.5s, background-color 0.5s, padding 0.5s;
+      pointer-events: none;
+    }
+
+    .input-group-input {
+      font: inherit;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      outline: 2px solid #000;
+      background-color: transparent;
+      transition: outline-color 0.5s;
+    }
+
+    .input-group-input:focus {
+      outline-color: #3c50eb;
+    }
+
+    .input-group-input:focus + .input-group-label,
+    .input-group-input:valid + .input-group-label {
+      padding: 5px;
+      transform: translate(10px, -35px) scale(1);
+      background-color: white;
+    }
+
+  </style>
+</head>
+<body>
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a href="/profile">Profile</a></li>
+  <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+    <li><a href="#" class="bn632-hover bn22" data-bs-toggle="modal" data-bs-target="#Addproduct">Add product</a></li>
+  </div>
+  <li><a href="#">team</a></li>
+  <li><a href="#">contact</a></li>
+</ul>
+<form action="/change-password" method="post">
+  <div class="modal fade" id="Addproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="exampleModalLabel">New Product</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <input type="text" id="productField" name="currentPassword" class="input-group-input" required />
+            <label for="productField" class="input-group-label">New Name</label>
+          </div>
+          <div class="input-group">
+            <input type="text" id="priceField" name="newPassword" class="input-group-input" required />
+            <label for="priceField" class="input-group-label">New Price</label>
+          </div>
+          <div class="input-group">
+            <input type="text" id="descriptionField" name="reNewPassword" class="input-group-input" required />
+            <label for="descriptionField" class="input-group-label">New Description</label><br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addItem()">Create new Product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<marquee><h1>SULPAK</h1></marquee>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+  <a th:href="@{'/admin-panel'}">ADMIN PANEL</a>
+</div>
+<div id="itemsField">
+  <!-- Items will be displayed here -->
+</div>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    loadItems();
+  });
+
+  function loadItems() {
+    fetch('http://localhost:8080/items')
+            .then(response => response.json())
+            .then(items => {
+              const itemsField = document.getElementById('itemsField');
+              let result = "";
+
+              items.forEach(item => {
+                result += `
+          <div class="card">
+            <div class="card-body">
+              <img class="card-img-top" src="https://object.pscloud.io/cms/cms/Photo/img_0_77_3411_0_1.webp" alt="${item.product}">
+              <h5>${item.product}</h5>
+              <a href="/details/${item.id}" class="bn31">
+                <span class="bn31span">${item.price} ₸</span>
+              </a>
+            </div>
+          </div>`;
+              });
+
+              itemsField.innerHTML = result;
+            })
+            .catch(error => {
+              console.error("Ошибка при загрузке данных:", error);
+            });
+  }
+  // ondblclick="itemChange(${item.id})
+  // function itemChange(id) {
+  //   fetch(`http://localhost:8080/items/${id}`)
+  //           .then(response => response.json())
+  //           .then(item => {
+  //             document.getElementById('productField').value = item.product;
+  //             document.getElementById('priceField').value = item.price;
+  //             document.getElementById('descriptionField').value = item.description;
+  //
+  //             // Automatically open the modal on double-click
+  //             $('#Addproduct').modal('show');
+  //           });
+  // }
+
+  function addItem() {
+    const product = document.getElementById('productField').value;
+    const price = document.getElementById('priceField').value;
+    const description = document.getElementById('descriptionField').value;
+
+    const item = {
+      product,
+      price,
+      description
+    };
+
+    fetch('http://localhost:8080/items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    })
+            .then(response => {
+              if (response.status === 200) {
+                loadItems();
+              }
+            });
+  }
+</script>
+</body>
+</html>
