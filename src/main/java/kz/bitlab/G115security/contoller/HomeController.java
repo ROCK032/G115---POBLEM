@@ -68,4 +68,12 @@ public class HomeController {
     model.addAttribute("item", item);
     return "details"; // Вернуть имя шаблона Thymeleaf
   }
+  @GetMapping("/card")
+  public String cardPage(){
+    return "card";
+  }
+  @GetMapping("/about")
+  public String aboutPage(){
+    return "about";
+  }
 }
